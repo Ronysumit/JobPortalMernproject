@@ -27,7 +27,6 @@ exports.applyJob = async (req, resp) => {
             return resp.status(400).json({
                 message: "You have already applied for this job",
                 success: false,
-                error: error.message
             })
         }
 
@@ -90,7 +89,7 @@ exports.getAppliedJobs = async (req, resp) => {
         })
     }
 }
-
+// for admin to see how any user applied for the job
 exports.getApplicants = async (req, resp) => {
     try {
         const jobId = req.params.id;

@@ -78,7 +78,9 @@ exports.getAllJobs = async (req, resp) => {
 exports.getJobBYId = async (req, resp) => {
     try {
         const jobId = req.params.id;
-        const job = await Job.findById(jobId);
+        const job = await Job.findById(jobId).populate({
+            path: "applications"
+        })
         if (!job) {
             return resp.status(404).json({
                 message: "jobs not found",
@@ -93,6 +95,7 @@ exports.getJobBYId = async (req, resp) => {
     } catch (error) {
         return resp.status(500).json({
             message: "Internal server problem",
+            success: false,
             error: error.message
         })
     }
@@ -102,8 +105,10 @@ exports.getJobBYId = async (req, resp) => {
 exports.getJobsByAdmin = async (req, resp) => {
     try {
         const adminID = req.id;
-        const jobs = await Job.find({ createdBy: adminID });
-        if (!jobs) {
+        const jobs = await Job.find({ createdBy: adminID })
+            .populate("companyId")
+            .sort({ createdAt: -1 });
+        if (!jobs || jobs.length === 0) {
             return resp.status(404).json({
                 message: "jobs not found",
                 success: false
