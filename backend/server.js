@@ -19,7 +19,10 @@ app.use(express.json()); // for understand json data sent by frontend
 app.use(express.urlencoded({ extended: true })); //This allows Express to understand data sent using HTML forms / URL-encoded format.
 app.use(cookieparser());// This helps Express read cookies sent by the browser.
 const corsOptions = {
-    origin: 'https://frontend-psi-vert-66.vercel.app',
+    origin: [
+        'http://localhost:5173',
+        'https://frontend-psi-vert-66.vercel.app',
+    ],
     credentials: true
 } //"I allow my React frontend running on localhost:5173 to communicate with me."
 app.use(cors(corsOptions)) //It allows things like cookies to be included in cross-origin requests.This is imPORTant if you're doing authentication with JWT stored in cookies.
